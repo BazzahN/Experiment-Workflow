@@ -23,7 +23,6 @@ I will run over a basic installation tutorial for your virtual machine, which is
 First, head to the link provided above and install a file whick looks something like this:
 ```
 quarto-1.9.37-linux-amd64.deb
-
 ```
 Then, head over to your downloads folder and open up your terminal. You can do this by right clicking, then in the context menu select `Open in Terminal`. Alternatively, you can open the terminal and 'cd' into the downloads folder. Once there, run the 'debian package get' command `dpkg` with the `-i` flag and the filename as a super user:
 ```
@@ -48,7 +47,6 @@ Before you do anything, you need to initialise the python environment that's bee
 ```
 chmod +x python_setup
 source ./python_setup
-
 ```
 The important packages it installs are listed:
 - argparse
