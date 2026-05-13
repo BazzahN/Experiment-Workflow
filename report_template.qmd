@@ -1,0 +1,82 @@
+---
+title: "Experiment Report"
+format: 
+  pdf:
+    keep-tex: true
+    documentclass: article
+    number-sections: true
+author: "Harry Newton"
+date: today
+execute:
+  echo: false
+jupyter: python3
+---
+```{python}
+#| tags: [parameters]
+#Assign default parameters
+exp_name = None
+```
+```{python}
+import yaml
+from pathlib import Path
+from IPython.display import Markdown, Latex, display
+from test_utils import FUNCTION_NAMES
+
+with open(f"configs/{exp_name}.yml", "r") as f:
+    config = yaml.safe_load(f)
+
+function_name = FUNCTION_NAMES[config['function_id']]
+del config['function_id']
+
+#TODO outdir.mkdir(parents=True,exist_ok=True)
+```
+# Experiment Summary - `{python} exp_name`
+
+We ran this experiment with $k=`{python} config['k']`$, $\tau=`{python} config['tau']`$,
+and seed $=`{python} config['seed']`$. We sampled our observations from 
+$$`{python} Markdown(function_name)`$$.
+
+| Parameter | Value | 
+|---------|---------|
+| $k$    | `{python} config['k']`|
+| $\tau$   |`{python} config['tau']` |
+| seed | `{python} config['seed']`|
+
+: Summary of experiment parameters
+
+# Results
+
+Here we can compare our sampled observations against the true funciton, the results are shown in @fig-obvs.
+
+```{python}
+#| label: fig-obvs
+#| fig-cap: "Showing the sampled observations against truth"
+#| fig-pos: H
+import matplotlib.pyplot as plt
+from extra_utils import get_files
+indir = Path(exp_name + "/Data")
+data = get_files(indir,['x','y','x_grid','f'])
+plt.plot(data['x_grid'],data['f'],'r-',label='Truth')
+plt.plot(data['x'],data['y'],'kx',label='Observations')
+plt.xlabel('$x$')
+plt.ylabel('Observations $y$')
+plt.legend()
+plt.show()
+```
+
+# Appendix
+
+```{python}
+#| label: tbl-hyper_data
+#| tbl-cap: "Contains the raw data from the experiments"
+#| tbl-column: body
+#| tbl-pos: H
+import pandas as pd
+
+results = {k: data[k] for k in ('x', 'y')}
+
+display(Latex(pd.DataFrame(results).to_latex(index=False)))
+
+
+```
+

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#Make exp shell scripts executable
+chmod +x generate_report.sh
+chmod +x run_experiment.sh
+
+# Creates virtual environment 'session_env' and activates it
+python3 -m venv experiment-env
+
+## echo will take the string and put it in the new file activate_env. -e interprets \n as a new line.
+echo -e "#!/bin/bash\nsource experiment-env/bin/activate" > activate_env
+
+##Makes the activate_env file executable and then executes it to start the python environment.
+chmod +x activate_env
+source ./activate_env
+echo "To leave env type: deactivate"
+#Show current python version
+echo "Python version: "
+python --version
+
+#Install packages from requirements, then print list with python -m pip list
+pip install -r requirements.txt
+python -m pip list
+
+echo "Setup Complete"
